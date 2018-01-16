@@ -74,7 +74,7 @@ namespace AkashicChains.Usage
 
             });
 
-            var chainBuilder = new ChainBuilder(x =>
+            var chainBuilder = ChainBuilder.Build(x =>
             {
                 var value = string.Empty;
 
@@ -86,9 +86,9 @@ namespace AkashicChains.Usage
                 value = x.Payload["EntityName"].ToString();
 
                 return ChainIdentity.Build(value);
-            });
+            }, LongitudinalEvaluators.Build());
 
-            var braidBuilder = BraidBuilder.Build(discriminators, chainBuilder);
+            var braidBuilder = BraidBuilder.Build(discriminators, chainBuilder, LongitudinalEvaluators.Build());
 
             trunk.AddBraid(braidBuilder);
             Console.WriteLine(markovEvents.Count);

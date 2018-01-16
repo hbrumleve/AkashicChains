@@ -4,7 +4,13 @@ using System.Text;
 
 namespace AkashicChains.Core
 {
-    class LongitudinalEvaluators
+    public class LongitudinalEvaluators
     {
+        private LongitudinalEvaluators()
+        {
+
+        }
+
+        public static LongitudinalEvaluators Build() => new LongitudinalEvaluators();
     }
 }

@@ -10,12 +10,18 @@ namespace AkashicChains.Core
         private Predicate<ChainIdentity> _chainWithIdentityExists;
         private readonly Func<MarkovEvent, ChainIdentity> _buildChainIdentity;
         private Func<ChainIdentity, Chain> _getChainByIdentity;
-        private readonly LongitudinalEvaluators _evaluators = new LongitudinalEvaluators();
+        private readonly LongitudinalEvaluators _evaluators;
 
 
-        public ChainBuilder(Func<MarkovEvent, ChainIdentity> buildChainIdentity)
+        private ChainBuilder(Func<MarkovEvent, ChainIdentity> buildChainIdentity, LongitudinalEvaluators evaluators)
         {
             _buildChainIdentity = buildChainIdentity;
+            _evaluators = evaluators;
+        }
+
+        public static ChainBuilder Build(Func<MarkovEvent, ChainIdentity> buildChainIdentity, LongitudinalEvaluators evaluators)
+        {
+            return new ChainBuilder(buildChainIdentity, evaluators);
         }
 
         public void Accept(ChainLink chainLink)
