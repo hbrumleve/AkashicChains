@@ -45,7 +45,7 @@ Each braid of chains contains the ability to create an axis of longitudinal anal
 In order to process the LA an evaluator must be set at the braid or chain level. The evaluator contains a name (which must be all lowercase, between 5 and 50 characters long, unique to the braid or chain it references) and 3 functions that are written in javascript in the following formats:
 * Evaluation Function =>  " function Evaluate(event, state) { }" the function returns a JSON object that represents the evaluation of the event.
 
-* Distance Function => " function Distance(eventA, eventB, evaluator, state) { } " the function returns a JSON object that represents the distance between the events. The event data is pulled from evaluations, not the original events. 
+* Distance Function => " function Distance(eventA, eventB, state) { } " the function returns a JSON object that represents the distance between the events. The event data is pulled from evaluations, not the original events. 
 
 # Defined Pattern Detection and Link Analysis
 Pattern detectors will listen to a given braid or chain (possibly the trunk, too). The detector will keep a state and look for series of events, specific thresholds, and occurences across multiple streams.
