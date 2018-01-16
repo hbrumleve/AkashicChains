@@ -58,7 +58,7 @@ namespace AkashicChains.Usage
                 var eventNames = metadataProperties["CLRType"].Split(',')[0].Split('.');
                 var eventName = eventNames[eventNames.Length - 1];
 
-                var markovEvent = new MarkovEvent(eventName, eventProperties, occurredOn, rawEvent);
+                var markovEvent = MarkovEvent.Build(eventName, eventProperties, occurredOn, rawEvent);
 
                 markovEvents.Add(markovEvent);
             }

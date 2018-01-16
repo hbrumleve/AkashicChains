@@ -12,5 +12,10 @@ namespace AkashicChains.Core
         }
 
         public static LongitudinalEvaluators Build() => new LongitudinalEvaluators();
+
+        public void AddEvaluator(LongitudinalEvaluator evaluator)
+        {
+
+        }
     }
 }

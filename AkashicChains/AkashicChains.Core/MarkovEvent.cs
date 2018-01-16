@@ -1,17 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Jint;
+using Jint.Native;
+using Newtonsoft.Json;
 
 namespace AkashicChains.Core
 {
     public class MarkovEvent
     {
-        public MarkovEvent(string eventType, Dictionary<string, object> payload, DateTime occurredOn, string original)
+        private MarkovEvent(string eventType, Dictionary<string, object> payload, DateTime occurredOn, string original)
         {
             EventType = eventType;
             Payload = payload;
             OccurredOn = occurredOn;
             Original = original;
+        }
+        public static MarkovEvent Build(string eventType, object rawEvent, DateTime occurredOn)
+        {
+            var jsonEvent = JsonConvert.SerializeObject(rawEvent);
+            var engine = new Engine().Execute("function parse(o){ return JSON.parse(o);}");
+            var parser = engine.GetValue("parse");
+
+            var jsEvent = parser.Invoke(jsonEvent).AsObject();
+
+            Func<JsValue, object> parseValue = value =>
+            {
+                switch (value.Type)
+                {
+                    case Jint.Runtime.Types.String:
+                    default:
+                        return value.ToString();
+                    case Jint.Runtime.Types.Boolean:
+                        return Boolean.Parse(value.ToString());
+                    case Jint.Runtime.Types.Number:
+                        return Decimal.Parse(value.ToString());
+
+                    case Jint.Runtime.Types.None:
+                    case Jint.Runtime.Types.Undefined:
+                    case Jint.Runtime.Types.Null:
+                    case Jint.Runtime.Types.Object:
+                        throw new ArgumentOutOfRangeException(value.Type.ToString());
+                }
+            };
+
+            var eventProperties = new Dictionary<string, object>(jsEvent.GetOwnProperties().Select(x => new KeyValuePair<string, object>(x.Key, parseValue(x.Value.Value))));
+
+            return new MarkovEvent(eventType, eventProperties, occurredOn, jsonEvent);
+        }
+        public static MarkovEvent Build(string eventType, Dictionary<string, object> payload, DateTime occurredOn, string original)
+        {
+            return new MarkovEvent(eventType, payload, occurredOn, original);
         }
 
         public string EventType { get; private set; }
