@@ -11,6 +11,7 @@ namespace AkashicChains.Core
         private readonly Func<MarkovEvent, ChainIdentity> _buildChainIdentity;
         private Func<ChainIdentity, Chain> _getChainByIdentity;
         private readonly LongitudinalEvaluators _evaluators;
+        private Braid _braid;
 
 
         private ChainBuilder(Func<MarkovEvent, ChainIdentity> buildChainIdentity, LongitudinalEvaluators evaluators)
@@ -24,13 +25,18 @@ namespace AkashicChains.Core
             return new ChainBuilder(buildChainIdentity, evaluators);
         }
 
+        internal void AddBraid(Braid braid)
+        {
+            _braid = braid;
+        }
+
         public void Accept(ChainLink chainLink)
         {
             var chainIdentity = _buildChainIdentity(chainLink.MarkovEvent);
 
             if (!_chainWithIdentityExists(chainIdentity))
             {
-                var newChain = Chain.Build(chainIdentity);
+                var newChain = Chain.Build(chainIdentity, _braid);
 
                 _addChain(chainIdentity, newChain);
             }

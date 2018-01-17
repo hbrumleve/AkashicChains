@@ -28,6 +28,8 @@ namespace AkashicChains.Core
         {
             var braid = new Braid(discriminators, chainBuilder, addThreshold);
 
+            chainBuilder.AddBraid(braid);
+
             chainBuilder.AcceptAddChainAction(braid._chains.ContainsKey, braid._chains.Add, x => braid._chains[x]);
 
             // wire up async here

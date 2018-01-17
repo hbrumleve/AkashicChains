@@ -35,12 +35,12 @@ namespace AkashicChains.Test.LongitudinalAnalysis
 
             var chainLongitudinalEvaluators = LongitudinalEvaluators.Build();
 
-            chainLongitudinalEvaluators.AddEvaluator(LongitudinalEvaluator.Build("something", (a, s) => JsonConvert.SerializeObject(a), (a, b, e, s) => JsonConvert.SerializeObject(a.OccurredOn - b.OccurredOn)));
+            chainLongitudinalEvaluators.AddEvaluator(LongitudinalEvaluator.Build("Identity", (a, s) => JsonConvert.SerializeObject(a), (a, b, e, s) => JsonConvert.SerializeObject(a.OccurredOn - b.OccurredOn)));
 
-            var chainBuilder = ChainBuilder.Build(x => ChainIdentity.Build(x.Payload["EventName"].ToString()), chainLongitudinalEvaluators);
+            var chainBuilder = ChainBuilder.Build(x => ChainIdentity.Build(x.Payload["EntityName"].ToString()), chainLongitudinalEvaluators);
 
             // Braid needs a name!
-            var braidBuilder = BraidBuilder.Build("first", braidDiscriminators, chainBuilder, LongitudinalEvaluators.Build());
+            var braidBuilder = BraidBuilder.Build("Initial", braidDiscriminators, chainBuilder, LongitudinalEvaluators.Build());
 
             trunk.AddBraid(braidBuilder);
 
