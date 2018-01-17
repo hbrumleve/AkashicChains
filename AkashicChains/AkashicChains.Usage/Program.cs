@@ -88,7 +88,7 @@ namespace AkashicChains.Usage
                 return ChainIdentity.Build(value);
             }, LongitudinalEvaluators.Build());
 
-            var braidBuilder = BraidBuilder.Build(discriminators, chainBuilder, LongitudinalEvaluators.Build());
+            var braidBuilder = BraidBuilder.Build("test", discriminators, chainBuilder, LongitudinalEvaluators.Build());
 
             trunk.AddBraid(braidBuilder);
             Console.WriteLine(markovEvents.Count);

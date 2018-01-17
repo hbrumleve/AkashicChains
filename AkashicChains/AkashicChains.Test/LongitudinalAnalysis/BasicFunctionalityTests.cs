@@ -40,7 +40,7 @@ namespace AkashicChains.Test.LongitudinalAnalysis
             var chainBuilder = ChainBuilder.Build(x => ChainIdentity.Build(x.Payload["EventName"].ToString()), chainLongitudinalEvaluators);
 
             // Braid needs a name!
-            var braidBuilder = BraidBuilder.Build(braidDiscriminators, chainBuilder, LongitudinalEvaluators.Build());
+            var braidBuilder = BraidBuilder.Build("first", braidDiscriminators, chainBuilder, LongitudinalEvaluators.Build());
 
             trunk.AddBraid(braidBuilder);
 

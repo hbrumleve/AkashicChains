@@ -10,18 +10,20 @@ namespace AkashicChains.Core
         readonly ChainBuilder _chainBuilder;
         private readonly LongitudinalEvaluators _evaluators;
         readonly int _addThreshold;
+        public string Name { get; private set; }
 
-        private BraidBuilder(BraidLinkDiscriminators discriminators, ChainBuilder chainBuilder, LongitudinalEvaluators evaluators, int addThreshold)
+        private BraidBuilder(string name, BraidLinkDiscriminators discriminators, ChainBuilder chainBuilder, LongitudinalEvaluators evaluators, int addThreshold)
         {
+            Name = name;
             this._discriminators = discriminators;
             this._chainBuilder = chainBuilder;
             _evaluators = evaluators;
             this._addThreshold = addThreshold;
         }
 
-        public static BraidBuilder Build(BraidLinkDiscriminators discriminators, ChainBuilder chainBuilder, LongitudinalEvaluators evaluators, int addThreshold = 1)
+        public static BraidBuilder Build(string name, BraidLinkDiscriminators discriminators, ChainBuilder chainBuilder, LongitudinalEvaluators evaluators, int addThreshold = 1)
         {
-            var braidBuilder = new BraidBuilder(discriminators, chainBuilder, evaluators, addThreshold);
+            var braidBuilder = new BraidBuilder(name, discriminators, chainBuilder, evaluators, addThreshold);
 
             return braidBuilder;
         }
