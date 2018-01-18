@@ -32,7 +32,11 @@ namespace AkashicChains.Core
             {
                 if (!_evaluations.Evaluations.ContainsKey(longitudinalEvaluators.Key))
                 {
-                    _evaluations.Evaluations.Add(longitudinalEvaluators.Key, new LongitudinalEvaluation());
+                    var newEvaluation = new LongitudinalEvaluation();
+
+                    newEvaluation.State = longitudinalEvaluators.Value.StateInitializer();
+
+                    _evaluations.Evaluations.Add(longitudinalEvaluators.Key, newEvaluation);
                 }
 
                 var evaluation = _evaluations.Evaluations[longitudinalEvaluators.Key];
@@ -40,10 +44,17 @@ namespace AkashicChains.Core
                 var state = evaluation.State;
 
                 // I think this isn't right because state may not be malleable ... should it be passed back as a complex type?
-                var value = longitudinalEvaluators.Value.Evaluator(chainLink.MarkovEvent, state);
+                var result = longitudinalEvaluators.Value.Evaluator(chainLink.MarkovEvent, state);
 
-                evaluation.Values.Add(value);
+                if (!result.HasNoValue)
+                {
+                    evaluation.Values.Add(result.Value);
+                }
 
+                if (result.State != null)
+                {
+                    evaluation.State = result.State;
+                }
             }
         }
     }

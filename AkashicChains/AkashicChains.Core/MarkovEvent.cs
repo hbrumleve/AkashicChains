@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Jint;
 using Jint.Native;
+using Jint.Native.Object;
 using Newtonsoft.Json;
 
 namespace AkashicChains.Core
@@ -17,14 +18,9 @@ namespace AkashicChains.Core
             OccurredOn = occurredOn;
             Original = original;
         }
-        public static MarkovEvent Build(string eventType, object rawEvent, DateTime occurredOn)
+
+        private static MarkovEvent BuildFromJintObject(string eventType, ObjectInstance jsEvent, string jsonEvent, DateTime occurredOn)
         {
-            var jsonEvent = JsonConvert.SerializeObject(rawEvent);
-            var engine = new Engine().Execute("function parse(o){ return JSON.parse(o);}");
-            var parser = engine.GetValue("parse");
-
-            var jsEvent = parser.Invoke(jsonEvent).AsObject();
-
             Func<JsValue, object> parseValue = value =>
             {
                 switch (value.Type)
@@ -49,6 +45,24 @@ namespace AkashicChains.Core
 
             return new MarkovEvent(eventType, eventProperties, occurredOn, jsonEvent);
         }
+
+        public static MarkovEvent BuildFromJson(string eventType, string jsonEvent, DateTime occurredOn)
+        {
+            var engine = new Engine().Execute("function parse(o){ return JSON.parse(o);}");
+            var parser = engine.GetValue("parse");
+
+            var jsEvent = parser.Invoke(jsonEvent).AsObject();
+
+            return BuildFromJintObject(eventType, jsEvent, jsonEvent, occurredOn);
+        }
+
+        public static MarkovEvent Build(string eventType, object rawEvent, DateTime occurredOn)
+        {
+            var jsonEvent = JsonConvert.SerializeObject(rawEvent);
+
+            return BuildFromJson(eventType, jsonEvent, occurredOn);
+        }
+
         public static MarkovEvent Build(string eventType, Dictionary<string, object> payload, DateTime occurredOn, string original)
         {
             return new MarkovEvent(eventType, payload, occurredOn, original);

@@ -15,18 +15,19 @@ namespace AkashicChains.Core
         private readonly ChainBuilder _chainBuilder;
         private IDisposable _subscription;
         private readonly Dictionary<ChainIdentity, Chain> _chains = new Dictionary<ChainIdentity, Chain>();
+        public string Name { get; private set; }
 
-
-        private Braid(BraidLinkDiscriminators discriminators, ChainBuilder chainBuilder, int addThreshold)
+        private Braid(string name, BraidLinkDiscriminators discriminators, ChainBuilder chainBuilder, int addThreshold)
         {
+            Name = name;
             _discriminators = discriminators;
             _chainBuilder = chainBuilder;
             _addThreshold = addThreshold;
         }
 
-        internal static Braid Build(BraidLinkDiscriminators discriminators, ChainBuilder chainBuilder, int addThreshold = 1)
+        internal static Braid Build(string name, BraidLinkDiscriminators discriminators, ChainBuilder chainBuilder, int addThreshold = 1)
         {
-            var braid = new Braid(discriminators, chainBuilder, addThreshold);
+            var braid = new Braid(name, discriminators, chainBuilder, addThreshold);
 
             chainBuilder.AddBraid(braid);
 

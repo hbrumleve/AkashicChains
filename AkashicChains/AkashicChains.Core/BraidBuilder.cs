@@ -30,7 +30,7 @@ namespace AkashicChains.Core
 
         public Braid BuildBraid(Trunk trunk)
         {
-            var braid = Braid.Build(_discriminators, _chainBuilder, _addThreshold);
+            var braid = Braid.Build(Name, _discriminators, _chainBuilder, _addThreshold);
 
             return braid;
         }
