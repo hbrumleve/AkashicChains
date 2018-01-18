@@ -47,13 +47,15 @@ namespace AkashicChains.Core
                 var messageStringifyEngine = new Engine().Execute("function stringify(o){ return JSON.stringify(o);}");
                 var jsonStringify = messageStringifyEngine.GetValue("stringify");
 
-                var parsedEvent = jsonParser.Invoke(a.Original);
-                var parsedState = jsonParser.Invoke(b.ToString());
+                var s = JsonConvert.SerializeObject(a);
+
+                var parsedEvent = jsonParser.Invoke(s);
+                var parsedState = jsonParser.Invoke(b);
 
                 var evaluation = evaluate.Invoke(parsedEvent, parsedState);
 
                 var parsedEvaluation = jsonStringify.Invoke(evaluation);
-                
+
                 var longitudinalCoordinate = JsonConvert.DeserializeObject<EvaluationResult>(parsedEvaluation.ToString());
 
                 return longitudinalCoordinate;
