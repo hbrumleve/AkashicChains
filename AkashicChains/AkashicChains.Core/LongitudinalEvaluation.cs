@@ -6,7 +6,13 @@ namespace AkashicChains.Core
 {
     public class LongitudinalEvaluation
     {
-        public List<string> Values { get; set; }
+        public List<LongitudinalCoordinate> Values { get; set; }
         public string State { get; set; }
+
+        public LongitudinalEvaluation()
+        {
+            Values = new List<LongitudinalCoordinate>();
+        }
+
     }
 }

@@ -6,6 +6,9 @@ namespace AkashicChains.Core
 {
     public class LongitudinalEvaluators
     {
+        private LongitudinalEvaluations _evaluations;
+        private readonly Dictionary<string, LongitudinalEvaluator> _evaluators = new Dictionary<string, LongitudinalEvaluator>();
+
         private LongitudinalEvaluators()
         {
 
@@ -15,17 +18,33 @@ namespace AkashicChains.Core
 
         public void AddEvaluator(LongitudinalEvaluator evaluator)
         {
-
+            _evaluators.Add(evaluator.Name, evaluator);
         }
 
-        public void SetEvaluationDestination(LongitudinalEvaluations evaluations)
+        internal void SetEvaluationDestination(LongitudinalEvaluations evaluations)
         {
-            throw new NotImplementedException();
+            _evaluations = evaluations;
         }
 
         public void Evaluate(ChainLink chainLink)
         {
-            throw new NotImplementedException();
+            foreach (var longitudinalEvaluators in _evaluators)
+            {
+                if (!_evaluations.Evaluations.ContainsKey(longitudinalEvaluators.Key))
+                {
+                    _evaluations.Evaluations.Add(longitudinalEvaluators.Key, new LongitudinalEvaluation());
+                }
+
+                var evaluation = _evaluations.Evaluations[longitudinalEvaluators.Key];
+
+                var state = evaluation.State;
+
+                // I think this isn't right because state may not be malleable ... should it be passed back as a complex type?
+                var value = longitudinalEvaluators.Value.Evaluator(chainLink.MarkovEvent, state);
+
+                evaluation.Values.Add(value);
+
+            }
         }
     }
 }

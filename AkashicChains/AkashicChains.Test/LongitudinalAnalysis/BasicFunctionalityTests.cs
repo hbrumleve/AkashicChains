@@ -35,7 +35,15 @@ namespace AkashicChains.Test.LongitudinalAnalysis
 
             var chainLongitudinalEvaluators = LongitudinalEvaluators.Build();
 
-            chainLongitudinalEvaluators.AddEvaluator(LongitudinalEvaluator.Build("Identity", (a, s) => JsonConvert.SerializeObject(a), (a, b, e, s) => JsonConvert.SerializeObject(a.OccurredOn - b.OccurredOn)));
+            chainLongitudinalEvaluators.AddEvaluator(LongitudinalEvaluator.Build("Identity", (a, s) =>
+            {
+                var coordinate = new LongitudinalCoordinate();
+
+                coordinate.X = JsonConvert.SerializeObject(a);
+                coordinate.Y = JsonConvert.SerializeObject(a.OccurredOn);
+
+                return coordinate;
+            }, (a, b, e, s) => JsonConvert.SerializeObject(a.OccurredOn - b.OccurredOn)));
 
             var chainBuilder = ChainBuilder.Build(x => ChainIdentity.Build(x.Payload["EntityName"].ToString()), chainLongitudinalEvaluators);
 
