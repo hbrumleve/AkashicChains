@@ -43,6 +43,9 @@ To be designed: Create another default chain that would allow each event in the 
 Each braid of chains contains the ability to create an axis of longitudinal analysis that can exist at a braid level or for each individual chain.
 
 In order to process the LA an evaluator must be set at the braid or chain level. The evaluator contains a name (which must be all lowercase, between 5 and 50 characters long, unique to the braid or chain it references) and 3 functions that are written in javascript in the following formats:
+
+* State Initialization Function => function Initialize() {}" The function returns a JSON object that represents the initial state for the evaluation.
+
 * Evaluation Function =>  " function Evaluate(event, state) { }" the function returns a JSON object that represents the evaluation of the event.
 
 * Distance Function => " function Distance(eventA, eventB, evaluator(event), state) { } " the function returns a JSON object that represents the distance between the events. The event data is pulled from the original events, use the evaluator function to get the transformed value. 
