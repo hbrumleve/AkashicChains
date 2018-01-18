@@ -4,9 +4,9 @@ using System.Text;
 
 namespace AkashicChains.Core
 {
-    class LongitudinalEvaluation
+    public class LongitudinalEvaluation
     {
         public List<string> Values { get; set; }
-        public List<string> States { get; set; }
+        public string State { get; set; }
     }
 }

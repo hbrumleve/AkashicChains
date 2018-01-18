@@ -5,25 +5,30 @@ using System.Text;
 
 namespace AkashicChains.Core
 {
-    class Chain
+    public class Chain
     {
-
-        public ChainIdentity ChainIdentity { get; private set; }
-
         public Braid Braid { get; private set; }
+        public ChainIdentity ChainIdentity { get; private set; }
         private readonly List<ChainLink> _chainLinks = new List<ChainLink>();
         public IReadOnlyList<ChainLink> ChainLinks => _chainLinks;
-        private readonly Dictionary<string, LongitudinalEvaluations> _evaluations = new Dictionary<string, LongitudinalEvaluations>();
-        
-        private Chain(ChainIdentity chainIdentity, Braid braid)
+        private readonly LongitudinalEvaluations _evaluations;
+        private readonly LongitudinalEvaluators _longitudinalEvaluators;
+
+        private Chain(ChainIdentity chainIdentity, Braid braid, LongitudinalEvaluators longitudinalEvaluators, LongitudinalEvaluations evaluations)
         {
+            _longitudinalEvaluators = longitudinalEvaluators;
+            _evaluations = evaluations;
             ChainIdentity = chainIdentity;
             Braid = braid;
         }
 
-        public static Chain Build(ChainIdentity chainIdentity, Braid braid)
+        public static Chain Build(ChainIdentity chainIdentity, Braid braid, LongitudinalEvaluators longitudinalEvaluators)
         {
-            return new Chain(chainIdentity, braid);
+            var evaluations = new LongitudinalEvaluations();
+
+            longitudinalEvaluators.SetEvaluationDestination(evaluations);
+
+            return new Chain(chainIdentity, braid, longitudinalEvaluators, evaluations);
         }
 
         public void AddChainLink(ChainLink chainLink)
@@ -44,6 +49,8 @@ namespace AkashicChains.Core
             chainLink.AddToChain(position);
 
             _chainLinks.Add(chainLink);
+
+            _longitudinalEvaluators.Evaluate(chainLink);
         }
     }
 }

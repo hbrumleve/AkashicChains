@@ -36,7 +36,7 @@ namespace AkashicChains.Core
 
             if (!_chainWithIdentityExists(chainIdentity))
             {
-                var newChain = Chain.Build(chainIdentity, _braid);
+                var newChain = Chain.Build(chainIdentity, _braid, _evaluators);
 
                 _addChain(chainIdentity, newChain);
             }

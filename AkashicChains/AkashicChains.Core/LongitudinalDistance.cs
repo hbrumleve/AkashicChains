@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AkashicChains.Core
 {
-    class LongitudinalDistance
+    public class LongitudinalDistance
     {
         public static LongitudinalDistance Initial => new LongitudinalDistance { IsInitial = true };
 

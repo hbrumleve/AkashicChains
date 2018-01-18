@@ -17,5 +17,15 @@ namespace AkashicChains.Core
         {
 
         }
+
+        public void SetEvaluationDestination(LongitudinalEvaluations evaluations)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Evaluate(ChainLink chainLink)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

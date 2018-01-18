@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AkashicChains.Core
 {
-    class ChainPosition
+    public class ChainPosition
     {
         public ChainPosition(Chain chain, int position, LongitudinalDistance distance)
         {

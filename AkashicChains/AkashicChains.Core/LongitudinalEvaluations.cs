@@ -2,8 +2,8 @@
 
 namespace AkashicChains.Core
 {
-    class LongitudinalEvaluations
+    public class LongitudinalEvaluations
     {
-        public List<LongitudinalEvaluation> Evaluations = new List<LongitudinalEvaluation>();
+        public Dictionary<string, LongitudinalEvaluation> Evaluations = new Dictionary<string, LongitudinalEvaluation>();
     }
 }
